@@ -1,5 +1,5 @@
 <h1 align="center">
-  🚀 Competitive Programming Repository
+  🚀 Competitive Programming
 </h1>
 
 <p align="center">
