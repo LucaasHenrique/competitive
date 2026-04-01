@@ -1,0 +1,19 @@
+a1 + a2 = a2 + a3 = k;
+
+então a1 = a3;
+
+posições de mesma paridade possuem o mesmo valor;
+
+a1 = a3 = a5;
+a2 = a4 = a6;
+
+no intervalo [1, n] temos (n / 2) numeros impares e (n / 2) pares, então para ser possivel encontrar permutações validas temos q ter (n / 2) numeros iguais
+e o restante tbm deve ser igual, então:
+
+[1, 2, 1], temos (n / 2) numeros iguais e o restante tbm é igual;
+
+[1, 2, 1, 2], [1: 2], [2: 2];
+
+a solução é apenas contar a ocerrencia de cada numero e ver se a diferenca é <= 1;
+
+

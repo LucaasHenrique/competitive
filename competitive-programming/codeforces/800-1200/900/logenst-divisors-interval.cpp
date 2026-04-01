@@ -17,7 +17,12 @@ using namespace std;
 #define MAXN 300100
 
 void solve() {
+    ll n; cin >> n;
+    
+    ll i = 1;
+    while (n % i == 0) i++;
 
+    cout << i - 1 << '\n'; 
 }
 
 int32_t main () {
@@ -26,7 +31,7 @@ int32_t main () {
     cin.tie(nullptr);
 
     int t = 1;
-    //cin >> t;
+    cin >> t;
     while (t--) solve();
     return 0;
 }
