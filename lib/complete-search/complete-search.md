@@ -22,9 +22,9 @@ mesma com o parâmetro k +1. No entanto, se k = n, a função percebe que todos 
 
 Metodo 2: Representação de bits
 
-Cada subset de um set de tamanho $N$ pode ser representado como uma sequencia de $N$ bits, que corresponde a um inteiro entre 0...$2^n -1$. Cada bit = 1 na sequencia representa o numero que está no subset, por exemplo:
+Cada subset de um set de tamanho N pode ser representado como uma sequencia de N bits, que corresponde a um inteiro entre 0...2^n -1. Cada bit = 1 na sequencia representa o numero que está no subset, por exemplo:
 
-{${0, 3, 4}$} pode ser representado como $11001$, por convenção lemos da direita para esquerda começando do 0.
+{0, 3, 4} pode ser representado como 11001, por convenção lemos da direita para esquerda começando do 0.
 
 ```c++
 for (int b = 0; b < (1<<n); b++) {
@@ -37,10 +37,10 @@ for (int b = 0; b < (1<<n); b++) {
 
 ## Gerando permutações
 
-uma permutação é uma sequencia de tamanho $N$ onde aparecem 1....$N$ elementos de forma arbitraria, então:
+uma permutação é uma sequencia de tamanho N onde aparecem 1....N elementos de forma arbitraria, então:
 
-$N=4$
-{${1, 2, 3, 4}$} é uma permutação
+N=4
+{1, 2, 3, 4} é uma permutação
 
 gerando uma permutação de forma recursiva:
 
