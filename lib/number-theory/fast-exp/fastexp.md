@@ -4,7 +4,7 @@
 - Em caso de um `n` mt grande essa não será a maneira mais eficiente de calcular a potência.
 
 ***
-Dado A, N e M, calcule $A^N mod M$
+Dado A, N e M, calcule A^N mod M 
 
 solução ingênua O(n):
 
@@ -38,16 +38,6 @@ int expRapida(int base, long long exp, int mod){
 ```
 ***
 
-Outra forma de implementar é pela seguinte relação de reconrrencia:
-
-$$
-x^n =
-\begin{cases}
-1 & \text{se } n = 0 \\
-\left(x^{\frac{n}{2}}\right)^2 & \text{se } n \text{ é par} \\
-\left(x^{\frac{n-1}{2}}\right)^2 \cdot x & \text{se } n \text{ é ímpar}
-\end{cases}
-$$
 
 ```c++
 int Exp(int x, int n)

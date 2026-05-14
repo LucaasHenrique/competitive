@@ -2,12 +2,12 @@
 
 -> MEX encontra o menor numero inteiro não negativo que não está no conjunto A;
 
-$A = {2, 3, 0, 4, 5}$
-$MEX(A) = 1;$
+A = {2, 3, 0, 4, 5}
+MEX(A) = 1;
 
 O MEX sempre procura pelo menor numero inteiro que não aparece no conjunto, ou seja, a busca sempre começa pelo 0.
 
-então, se $a = [2, 2, 3, 4]$ e faço o $MEX(a)$, tenho como resultado $MEX = 0$;
+então, se `a = [2, 2, 3, 4]` e faço o MEX(a), tenho como resultado MEX = 0;
 
 -> The following algorithm runs in  O(NlogN)  time.
 ```c++
@@ -21,7 +21,7 @@ int mex(vector<int> const& A) {
 }
 ```
 
--> in $O(N)$
+-> in O(N)
 ```c++
 int mex(vector<int> const& A) {
     static bool used[MAX_N+1] = { 0 };

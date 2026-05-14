@@ -286,8 +286,5 @@ Memória:
 
 ```text
 O(1)
-````[false, false, false, false, false, true, true, true, true]`
-
-ou seja a partir de sexto, todos os elementos satisfazem a condição esperada, então podemos dizer que 6 e a menor solução valida.
-
+```
 
