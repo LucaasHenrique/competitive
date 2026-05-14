@@ -6,12 +6,13 @@ using std::cout;
 
 
 int32_t main() {
-    int n = 5; 
+    int n = 5;
+    vector<int> p = {2, 1, 0, 3, 0};
     for (int b = 0; b < (1<<n); b++) {
         vector<int> subset;
         
         for (int i = 0; i < n; i++) {
-            if (b&(1<<i)) subset.push_back(i);
+            if (b&(1<<i)) subset.push_back(p[i]);
         }
 
         cout << "{";

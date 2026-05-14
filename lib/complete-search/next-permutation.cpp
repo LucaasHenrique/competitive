@@ -11,8 +11,8 @@ int32_t main () {
     
     vector<int> permutation;
 
-    int n = 5;
-    for (int i = 0; i < n; i++) permutation.push_back(i);
+    int n = 5; permutation = {2, 1, 0,3,0};
+    //for (int i = 0; i < n; i++) permutation.push_back(i);
 
     do {
         cout << "{";
