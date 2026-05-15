@@ -1,0 +1,12 @@
+colorscheme slate
+
+set nu rnu ac ai cin sw=4 ts=4 syn=cpp cul 
+
+nnoremap j gj
+nnoremap k gk
+
+nnoremap <F5> :w<cr>:!g++ % -o %<<cr>:term ./%<
+nnoremap <F2> :term ./%<<cr>I
+
+inoremap {<cr> {<cr>}<C-o>O
+inoremap <C-h> <C-w>
