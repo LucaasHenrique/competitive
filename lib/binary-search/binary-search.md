@@ -233,6 +233,31 @@ Nesse caso:
 
 ***
 
+# Find the Maximum Value
+
+Tbm podemos usar para encontrar o maximo valor para uma função que esta em crescimento e depois começa a decrescer, ou seja queremos encontrar o pico dessa função. 
+
+a ideia é ir testando se `f(x) < f(x + 1)` se isso for verdade ainda estamos na subida, se não ou ja chegou no pico ou esta decrescendo.
+
+```c++
+int left = 0;
+int right = n - 1;
+
+while (left < right) {
+    int mid = (left + right) / 2;
+
+    if (f(mid) < f(mid + 1)) {
+        // ainda está subindo
+        left = mid + 1;
+    } else {
+        // chegou no pico ou já está descendo
+        right = mid;
+    }
+}
+
+int k = left; // posição do máximo
+```
+
 # Exemplo genérico
 
 ```cpp
