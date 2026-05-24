@@ -46,7 +46,7 @@ basicamente quero que seja de forma sequencial, uma acaba e outro começa.
 
 nesse caso somente 2 eventos podem ser escolhidos.
 
-nesse caso a solução ideal é ordenar todos eventos pelo horario de termino, e depois comparar o horario de incio do proximo com o horario de termino do atual
+a solução ideal é ordenar todos eventos pelo horario de termino, e depois comparar o horario de incio do proximo com o horario de termino do atual
 
 exemplo A e B;
 
@@ -85,3 +85,75 @@ void solve() {
     cout << t << "\n";
 }
 ```
+***
+# Task and Deadlines 
+
+Imagine que temos N tarefas com tempo de duração e prazo de termino e queremos encontrar uma ordem para fazer as tarefas. Para cada tarefa feita
+ganhamos `D - X` pontos onde `D` é o prazo de termino e `X` o momento em que terminamos a tarefa. Qual o maior numero de pontos que podemos alcançar? 
+
+Answer: 
+
+
+| task | duration | deadline |
+|---|---|---|
+| A | 4 | 2 |
+| B | 3 | 5 |
+| C | 2 | 7 |
+| D | 4 | 5 |
+
+
+A solução otima é ordenar as tarefas pelo tempo de duração é pegar sempre a com menor tempo de duração no momento.
+
+então a ordem fica:
+
+2 -> 3 -> 4 -> 4 
+
+a soma de pontos fica:
+
+(7 - 2) + (5 - 5) + (2 - 9) + (5 - 13) = -10
+***
+# Minimizing Sums
+
+Dado uma sequencia de numero de tamanho N onde `a1, a2, a3...aN`, nossa tarefa é encontrar um valor `x` que minimize a soma
+
+`[a1 - x]^c + [a2 - x]^c + [a3 - x]^c ... + [aN - x]^c`
+
+se `C = 1`:
+
+temos que minimizar `[a1 - x] + [a2 - x] + ... + [aN - x]`
+
+considere o array `[1,2,9,2,6]`, nesse caso a melhor solução é escolher `2`, pois:
+
+`|1−2| +|2−2| +|9−2| +|2−2| +|6−2| = 12`
+
+Nesse caso a melhor escolhar é pegar a mediana dos numeros de depois de aplicar uma ordenação 
+
+`[1, 2, 2, 6, 9]`
+
+A mediana garante a solução otima, pq se x for menor que a mediana a soma se torna minima ao aumentar x, e se x for maior que a mediana
+a soma se torna menor ou diminuir x. se a sequencia tiver tamanho par ela possui 2 medianas basta escolha uma das duas é teremos a resposta otima.
+***
+
+Caso `C = 2`
+
+Queremos minimizar a soma:
+
+`(a1 − x)² + (a2 − x)² + ··· + (aN − x)²`
+
+se o array for `[1,2,9,2,6]`, a melhor solução é escolher `x = 4`
+
+que produz a soma: 
+
+`(1−4)² +(2−4)² +(9−4)² +(2−4)² +(6−4)² = 46.`
+
+nesse caso a melhor solução para x é escolher a media de todos os numeros, `[1 + 2 + 2 + 9 + 6] / 2 = 4`
+
+para obter o resultado a soma pode ser representada como:
+
+`nx² + 2x(a1 + a2 + a3 + .... + an)`
+
+isso forma uma função quadratica nx² + 2xs, onde `s = (a1 + a2 + a3 + .... + an)`, isso forma uma parabola com concavidade virada para cima
+nesse o ponto onde o minimo acontece é no X do vertice, que é dado pela formula x = -b/2a, fazendo os calculos chegaremos em x = s / n que é a media dos numeros.
+***
+
+
