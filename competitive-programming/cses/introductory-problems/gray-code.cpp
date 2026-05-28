@@ -15,8 +15,31 @@ using namespace std;
 #define pb push_back
 #define maxn 300100
 
+// i = 1;
+// 1 -> 001, i >> 1 => 100
+// 001 ^ 000 = 001;
+//
+// 011
+// 000
+// 000 
+//
+//
+
 void solve() {
     int n; cin >> n;
+    
+    vector<string> r;
+    for (int i = 0; i < (1 << n); i++) {
+        int gray = i ^ (i >> 1);
+        string code = "";
+        // constroi a string bit a bit
+        for (int j = n - 1; j >= 0; j--) {
+            code += (gray & (1 << j)) ? "1" : "0";
+        }
+        r.pb(code);
+    }
+
+    for (auto c: r) cout << c << "\n";
 }
 
 int main (int argc, char *argv[]) {

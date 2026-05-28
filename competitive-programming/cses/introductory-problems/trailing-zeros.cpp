@@ -18,25 +18,17 @@ using namespace std;
 
 void solve() {
     
-    int n, x; cin >> n >> x;
+    ll n; cin >> n;
 
-    vector<int> a(n);
-
-    forn (i, n) cin >> a[i];
-
-    map<int, int> mp;
-    for (int i = 0; i < n; i++) {
-        //cout << x - a[i] << "\n";
-        if (mp[x - a[i]] != 0) {
-            cout << mp[x - a[i]] << " " << ++i << "\n";
-            return;
-        } else {
-            int t = i + 1;
-            mp[a[i]] = t;
-        }
+    int i = 1;
+    ll powc = 5, sum = 0; 
+    while (powc <= n) {
+        sum += n / pow(5, i);
+        powc = pow(5, i);
+        i++;
     }
 
-    cout << "IMPOSSIBLE" << "\n";
+    cout << sum << "\n";
 }
 
 int32_t main () {

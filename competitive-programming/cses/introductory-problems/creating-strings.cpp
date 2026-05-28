@@ -18,25 +18,16 @@ using namespace std;
 
 void solve() {
     
-    int n, x; cin >> n >> x;
-
-    vector<int> a(n);
-
-    forn (i, n) cin >> a[i];
-
-    map<int, int> mp;
-    for (int i = 0; i < n; i++) {
-        //cout << x - a[i] << "\n";
-        if (mp[x - a[i]] != 0) {
-            cout << mp[x - a[i]] << " " << ++i << "\n";
-            return;
-        } else {
-            int t = i + 1;
-            mp[a[i]] = t;
-        }
-    }
-
-    cout << "IMPOSSIBLE" << "\n";
+    string s; cin >> s;
+    
+    sort(s.begin(), s.end());
+    vector<string> st; 
+    do {
+        st.pb(s);
+    } while (next_permutation(s.begin(), s.end()));
+    
+    cout << st.size() << "\n"; 
+    for (auto p: st) cout << p << "\n";
 }
 
 int32_t main () {

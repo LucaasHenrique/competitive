@@ -13,7 +13,7 @@ using namespace std;
 #define f first
 #define s second
 #define pb push_back
-#define maxn 300100
+#define MAXN 300100
 
 int v[MAXN];
 int seg[4*MAXN];
@@ -38,7 +38,7 @@ int update(int i, int x, int p, int l, int r) {
     if (l == r) return seg[p] = x;
     int m = (l + r) / 2;
 
-    return seg[p] = update(i, x, 2*p, l m) + update(i, x, 2*p+1, m+1, r);
+    return seg[p] = update(i, x, 2*p, l, m) + update(i, x, 2*p+1, m+1, r);
 } 
 
 void solve() {

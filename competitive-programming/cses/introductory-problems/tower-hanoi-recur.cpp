@@ -16,27 +16,25 @@ using namespace std;
 #define pb push_back
 #define MAXN 300100
 
-void solve() {
+void th(int n, vector<pair<int, int>>& m, int s, int e, int a)  {
     
-    int n, x; cin >> n >> x;
+    if (n == 1) {m.pb({s, e}); return;}
 
-    vector<int> a(n);
+    th(n-1, m, s, a, e);
 
-    forn (i, n) cin >> a[i];
+    m.pb({s, e});
 
-    map<int, int> mp;
-    for (int i = 0; i < n; i++) {
-        //cout << x - a[i] << "\n";
-        if (mp[x - a[i]] != 0) {
-            cout << mp[x - a[i]] << " " << ++i << "\n";
-            return;
-        } else {
-            int t = i + 1;
-            mp[a[i]] = t;
-        }
-    }
+    th(n-1, m, a, e, s);
+}
 
-    cout << "IMPOSSIBLE" << "\n";
+void solve() {
+        
+    int n; cin >> n; 
+    vector<pair<int, int>> m; 
+    th(n, m, 1, 3, 2);
+    
+    cout << m.size() << "\n";
+    for (auto [k, v]: m) cout << k << " " << v << "\n";
 }
 
 int32_t main () {

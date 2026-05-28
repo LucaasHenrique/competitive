@@ -16,27 +16,31 @@ using namespace std;
 #define pb push_back
 #define MAXN 300100
 
+ll maskoff(vector<ll> nums) {
+    ll res = INF32;
+    int n = nums.size();
+
+    for (int m = 0; m < (1 << n); m++) {
+        ll a = 0;
+        ll b = 0;
+        for (int i = 0; i < n; i++) {
+            if (m & (1 << i)) a += nums[i];
+            else b += nums[i];
+        }
+        
+        res = min(res, abs(a - b));
+    }
+    
+    return res;
+}
+
 void solve() {
     
-    int n, x; cin >> n >> x;
+    int n; cin >> n;
+    vector<ll> nums(n);
+    forn (i, n) cin >> nums[i];
 
-    vector<int> a(n);
-
-    forn (i, n) cin >> a[i];
-
-    map<int, int> mp;
-    for (int i = 0; i < n; i++) {
-        //cout << x - a[i] << "\n";
-        if (mp[x - a[i]] != 0) {
-            cout << mp[x - a[i]] << " " << ++i << "\n";
-            return;
-        } else {
-            int t = i + 1;
-            mp[a[i]] = t;
-        }
-    }
-
-    cout << "IMPOSSIBLE" << "\n";
+    cout << maskoff(nums) << "\n";
 }
 
 int32_t main () {

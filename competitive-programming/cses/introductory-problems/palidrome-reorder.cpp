@@ -21,7 +21,7 @@ void solve() {
     
     int r, c; cin >> r >> c;
     double area = PI * r.r;
-
+    
     cout << area - c;
 }
 

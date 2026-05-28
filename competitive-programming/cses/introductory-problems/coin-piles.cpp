@@ -16,27 +16,28 @@ using namespace std;
 #define pb push_back
 #define MAXN 300100
 
+// a = 7, b = 5 => a <= 2 * b - true, b <= 2 * a -> true;
+// 5, 4;
+// 3 3;
+// 2, 1
+// 0 0
+
+// l = remover 2 da esquerda e 1 da direita
+// r = remover 1 da esquerda e 2 da direita
+//
+// seja x a quantidade de vezes q fizemos o movimento l
+// seja y a quantidade de vezes q fizemos o movimento r 
+// temos que:
+// 2x + y = a
+// x + 2y = b
+//
+//
+
 void solve() {
     
-    int n, x; cin >> n >> x;
-
-    vector<int> a(n);
-
-    forn (i, n) cin >> a[i];
-
-    map<int, int> mp;
-    for (int i = 0; i < n; i++) {
-        //cout << x - a[i] << "\n";
-        if (mp[x - a[i]] != 0) {
-            cout << mp[x - a[i]] << " " << ++i << "\n";
-            return;
-        } else {
-            int t = i + 1;
-            mp[a[i]] = t;
-        }
-    }
-
-    cout << "IMPOSSIBLE" << "\n";
+    ll a, b; cin >> a >> b;
+    if ((a + b) % 3 == 0 && a <= 2 * b && b <= a * 2) cout << "YES" << "\n";
+    else cout << "NO" << "\n";
 }
 
 int32_t main () {
@@ -45,7 +46,7 @@ int32_t main () {
     cin.tie(nullptr);
 
     int t = 1;
-    //cin >> t;
+    cin >> t;
     while (t--) solve();
     return 0;
 }

@@ -17,26 +17,27 @@ using namespace std;
 #define MAXN 300100
 
 void solve() {
-    
-    int n, x; cin >> n >> x;
-
-    vector<int> a(n);
-
-    forn (i, n) cin >> a[i];
-
-    map<int, int> mp;
-    for (int i = 0; i < n; i++) {
-        //cout << x - a[i] << "\n";
-        if (mp[x - a[i]] != 0) {
-            cout << mp[x - a[i]] << " " << ++i << "\n";
-            return;
-        } else {
-            int t = i + 1;
-            mp[a[i]] = t;
-        }
+    int n; cin >> n;
+    vector<pair<ll, ll>> p;
+    int nn = n;
+    while (n--) {
+        ll a, b; cin >> a >> b;
+        p.pb({a, b});
     }
 
-    cout << "IMPOSSIBLE" << "\n";
+    sort(p.begin(), p.end());
+    
+    vector<ll> pref(nn);
+    pref[0] = p[0].f;
+    for (int i = 1; i < nn; i++) {
+        pref[i] = pref[i-1] + p[i].f;
+    }
+    
+    ll sum = 0;
+    for (int i = 0; i < nn; i++) {
+        sum += p[i].s - pref[i];
+    }
+    cout << sum << "\n";
 }
 
 int32_t main () {
