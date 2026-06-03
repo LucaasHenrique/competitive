@@ -132,7 +132,37 @@ cout << *next(it);
 ```
 
 ***
+# Multiset
 
+`multiset` é parecido com `set`, mas permite elementos repetidos.
+
+Os elementos também ficam em ordem crescente.
+
+Internamente usa uma árvore balanceada.
+
+Complexidade:
+
+```text
+Inserção: O(log N)
+Busca: O(log N)
+Remoção: O(log N)
+```
+
+-> Funçõs uteis
+
+```
+ms.insert(x)
+ms.erase(x)
+ms.count(x)
+ms.find(x)
+```
+
+erase() -> remove todas as ocorrencis de um valor
+
+use: 
+
+ms.erase(ms.find(5)) -> remove apenas uma ocorrencia.
+***
 # Map
 
 `map` armazena pares:
@@ -412,7 +442,6 @@ priority_queue<
 Agora o menor elemento ficará no topo.
 
 ***
-
 # Resumo
 
 | Estrutura | Ordenado | Duplicados | Busca |
@@ -424,3 +453,4 @@ Agora o menor elemento ficará no topo.
 | queue | Não | Sim | frente |
 | priority_queue | Parcial | Sim | topo |
 | bitset | Bits | - | O(1) |
+| multiset | Sim | Sim | O(log N) |
