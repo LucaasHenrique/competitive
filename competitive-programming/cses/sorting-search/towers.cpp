@@ -6,7 +6,7 @@ using namespace std;
 int main (int argc, char *argv[]) {
     
     int n; cin >> n;
-    vector<int> c;
+    vector<int> c(n);
 
     for (int i = 0; i <= n; i++) { int x; cin >> x; c[i] = x;}
     
