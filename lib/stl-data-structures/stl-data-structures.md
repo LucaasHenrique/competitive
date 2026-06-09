@@ -419,7 +419,7 @@ Topo:
 
 ## Funções úteis
 
-```cpp
+```cpp      
 pq.push(x)
 pq.pop()
 pq.top()
@@ -440,6 +440,47 @@ priority_queue<
 ```
 
 Agora o menor elemento ficará no topo.
+***
+# Policy Based Data Structures (PBDS)
+
+São estruturas de dados que não fazem parte da stl do c++.
+
+a ideia é usar policies como parametros da template para customizar o comportamento da estrututra.
+
+exemplo: 
+```c++
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp> 
+
+using namespace std;
+
+typedef __gnu_pbds::tree<int, __gnu_pbds::null_type, less<int>, __gnu_pbds::rb_tree_tag,
+        __gnu_pbds::tree_order_statistics_node_update> ordered_set;
+
+void solve() {
+    
+    int n; cin >> n;
+    ll k; cin >> k;
+    
+    ordered_set nums;
+    for (int i = 1; i <= n; i++) nums.insert(i);
+    
+    int pos = 0;
+    while (!nums.empty()) {
+        pos = (pos + k) % nums.size();
+        
+        auto it = nums.find_by_order(pos);
+        cout << *it << " ";
+        nums.erase(it);
+    }
+
+    cout << "\n";
+}
+```
+a estrutura do exemplo é um `set`, porem possui algumas funçoes extras:
+
+`find_by_order(idx)` -> busca um elemento com base em um indice é retorna um ponteiro.
+`order_of_key(value)` -> retorna o número de elementos estritamente menores que value
 
 ***
 # Resumo
