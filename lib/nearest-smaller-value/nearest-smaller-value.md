@@ -79,3 +79,32 @@ vector<int> nextGreaterElement(vector<int>& arr) {
     return ans;
 }
 ```
+***
+# Problema Nearest Smaller Value - CSES
+
+```
+Given an array of n integers, your task is to find for each array position the nearest position to its left having a smaller value.
+```
+
+minha resposta: 
+
+```c++
+
+void solve() {
+    int n; cin >> n;
+    vector<int> a(n+1);
+   
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    stack<pair<int, int>> s;
+    
+    for (int i = 1; i <= n; i++) {
+        
+        while (!s.empty() && s.top().first >= a[i]) s.pop();
+        
+        if (!s.empty()) cout << s.top().second << "\n";  
+        else cout << 0 << "\n"; 
+        
+        s.push({a[i], i});
+    }
+}
+```
