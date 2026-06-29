@@ -6,8 +6,10 @@ using std::cout;
 
 
 int32_t main() {
-    int n = 5;
-    vector<int> p = {2, 1, 0, 3, 0};
+    int n = 4;
+    vector<int> p;
+    for (int i = 1; i <= n; i++) p.push_back(i);
+    
     for (int b = 0; b < (1<<n); b++) {
         vector<int> subset;
         

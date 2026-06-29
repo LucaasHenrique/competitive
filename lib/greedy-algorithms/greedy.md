@@ -155,5 +155,43 @@ para obter o resultado a soma pode ser representada como:
 isso forma uma função quadratica nx² + 2xs, onde `s = (a1 + a2 + a3 + .... + an)`, isso forma uma parabola com concavidade virada para cima
 nesse o ponto onde o minimo acontece é no X do vertice, que é dado pela formula x = -b/2a, fazendo os calculos chegaremos em x = s / n que é a media dos numeros.
 ***
+# Another interval problem
 
+```c++
+void solve() {
+    int n; cin >> n;
+    vector<tuple<ll, ll, ll>> a;
 
+    forn (i, n) {
+        ll aa, b; cin >> aa >> b;
+        a.pb({aa, b, i});
+    }
+
+    sort(a.begin(), a.end());
+
+    auto [st, et, idx] = a[0];
+    vector<int> rooms(n);
+    multiset<pair<int, int>> e_r;
+
+    rooms[idx] = 1;
+    e_r.emplace(et, 1);
+
+    for (int i = 1; i< n; i++) {
+        auto [st, et, idx] = a[i];
+        
+        auto [smaller, rid] = *begin(e_r);
+        if (smaller < st) {
+            e_r.erase(e_r.begin());
+            rooms[idx] = rid;
+            e_r.emplace(et, rid);
+        } else {
+            rooms[idx] = len(e_r) + 1;
+            e_r.emplace(et, rooms[idx]);
+        }
+    }
+
+    cout << *max_element(rooms.begin(), rooms.end()) << "\n";
+    for (auto r: rooms) cout << r << " ";
+    cout << "\n";
+}
+```

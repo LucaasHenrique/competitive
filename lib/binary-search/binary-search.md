@@ -296,6 +296,42 @@ true ou false
   - buscamos na direita
 
 ***
+# Exemplo binary search on answer
+
+```c++
+
+bool is_valid(vector<ll>& a, ll x, ll t) {
+    ll sum = 0;
+    for (int i = 0; i < a.size(); i++) {
+        sum += x / a[i];
+        if (sum >= t) return true;
+    }
+
+    return sum >= t;
+}
+
+void solve() {
+    int n; cin >> n;
+    ll t; cin >> t;
+
+    vector<ll> a(n);
+    forn (i, n) cin >> a[i];
+
+    ll l = 1, r = 1e18;
+    ll ans = r;
+
+    while (l <= r) {
+        ll mid = l + (r - l) / 2;
+        
+        if (is_valid(a, mid, t)) {
+            r = mid - 1;
+            ans = mid;
+        } else l = mid + 1;
+    }
+
+    cout << ans << "\n";
+}
+```
 
 # Complexidade
 
