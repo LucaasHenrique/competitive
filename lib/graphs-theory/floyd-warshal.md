@@ -39,89 +39,52 @@ se usamos o vertice 1 como intermediario:
 fazemos isso sucessivamente colocando todos os vertices de 1 a N como intermediarios e atualizamos a matriz de distancias.
 
 ```c++
-#include <bits/stdc++.h>
-using namespace std;
-
-#define MAXN 505
-const int INF = 1e9;
-
 int n, m;
-int adj[MAXN][MAXN];
-int dist[MAXN][MAXN];
+ll g[MAXN+2][MAXN+2];
+ll dist[MAXN+2][MAXN+2];
 
-// Reads the graph
-void readGraph() {
-    // Initialize adjacency matrix
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= n; j++)
-            adj[i][j] = INF;
-
-    for (int i = 1; i <= m; i++) {
-        int a, b, w;
-        cin >> a >> b >> w;
-
-        adj[a][b] = w;
-
-        // Uncomment for an undirected graph
-        // adj[b][a] = w;
-    }
-}
-
-// Floyd-Warshall
-void floydWarshall() {
-
-    // Initialize distance matrix
+void floyd_warshall() {
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
-            if (i == j)
-                dist[i][j] = 0;
-            else if (adj[i][j] != INF)
-                dist[i][j] = adj[i][j];
-            else
-                dist[i][j] = INF;
+            if (i == j) dist[i][j] = 0;
+            else if (g[i][j] != INF64) dist[i][j] = g[i][j];
+            else dist[i][j] = INF64;
         }
     }
 
-    // Main algorithm
     for (int k = 1; k <= n; k++) {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-
-                if (dist[i][k] == INF || dist[k][j] == INF)
-                    continue;
-
-                dist[i][j] = min(dist[i][j],
-                                 dist[i][k] + dist[k][j]);
+                if (dist[i][k] == INF64 || dist[k][j] == INF64) continue;
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
             }
         }
     }
 }
 
-// Prints the distance matrix
-void printDistances() {
-    cout << "Shortest distance matrix:\n";
-
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (dist[i][j] == INF)
-                cout << "INF ";
-            else
-                cout << dist[i][j] << " ";
-        }
-        cout << '\n';
-    }
-}
-
-int main() {
+void solve() {
     cin >> n >> m;
+    int k; cin >> k;
 
-    readGraph();
+    forn (i, n) {
+        forn (j, n) {
+            g[i][j] = INF64;
+        }
+    }
 
-    floydWarshall();
+    forn (i, m) {
+        int a, b;
+        cin >> a >> b;
+        ll w; cin >> w;
+        g[a][b] = min(g[a][b], w);
+        g[b][a] = min(g[b][a], w);
+    }
 
-    printDistances();
-
-    return 0;
+    floyd_warshall();
+    while (k--) {
+        int a, b; cin >> a >> b;
+        cout << (dist[a][b] == INF64 ? -1 : dist[a][b]) << "\n";
+    }
 }
 ```
 
