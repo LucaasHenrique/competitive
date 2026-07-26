@@ -1,78 +1,115 @@
-Dynamic Programming
+# Dynamic Programming
 ***
 
-Programação dinamica é uma tecnica que combina a exatidão das buscas completas e a eficiencia dos algoritmos gulosos
+Programação dinâmica é uma técnica que combina a exatidão das buscas completas e a eficiência dos algoritmos gulosos.
 
-Pode ser aplicada quando o problema pode ser divido em subproblemas sobrepostos que podem ser resolvidos de forma independente.
+Pode ser aplicada quando o problema pode ser dividido em **subproblemas sobrepostos** que podem ser resolvidos de forma independente.
 
-exemplo: 
+Exemplo:
 
-para calcular `fib(5)` preciso calcular `fib(4)` e `fib(3)`, porem `fib(4)` tbm precisa de `fib(3)`, ou seja, `fib(3)` é um subproblema sobreposto pois aparece mais de uma vez. Podemos perceber que `fib(3)` sempre tem a mesma resposta, então podemos calcular somente uma vez e guardar o resultado.
+Para calcular `fib(5)` preciso calcular `fib(4)` e `fib(3)`. Porém, `fib(4)` também precisa de `fib(3)`, ou seja, `fib(3)` é um subproblema sobreposto, pois aparece mais de uma vez.
+
+Podemos perceber que `fib(3)` sempre tem a mesma resposta, então podemos calculá-lo somente uma vez e guardar o resultado.
+
 ***
 
 Existem duas formas de usar DP:
 
-1. Encontrar uma solução otima: Queremos encontrar uma solução que é a maior possivel ou a menor.
-2. Contar o numero de soluções: Queremos encontrar o numero de possiveis soluções.
+1. **Encontrar uma solução ótima:** queremos encontrar uma solução que seja a maior possível ou a menor.
+2. **Contar o número de soluções:** queremos encontrar o número de possíveis soluções.
 
-# Classics Problems
+# Classic Problems
 
-1. Coin Problem:
+## 1. Coin Problem
 
-```
+```text
 Given a set of coin values coins = {c1, c2,..., ck} and a target sum of money n, our task is to
-form the sum n using as few coins as possible
+form the sum n using as few coins as possible.
 ```
 
-é possivel resolver usando guloso, mas não necessariamente funciona para todos os casos
+É possível resolver usando algoritmo guloso, mas ele não necessariamente funciona para todos os casos.
 
-com dp iremos produzir todas as possiveis soluções igual em um backtracking, porem calculamos cada subproblema somente uma vez e guardamos esse resultado. Isso é conhecido como `memoization`, o que faz a dp ser tão eficiente.
+Com DP iremos produzir todas as possíveis soluções, assim como em um backtracking, porém calculamos cada subproblema somente uma vez e guardamos esse resultado. Isso é conhecido como **memoization**, o que faz a DP ser tão eficiente.
 
-a ideia é formular uma solução recursiva para o problema, de modo que a solução poder ser calculada com base na solução dos subproblemas.
+A ideia é formular uma solução recursiva para o problema, de modo que a solução possa ser calculada com base na solução dos subproblemas.
 
-"Qual o menor numero de moedas para formar a soma `x`";
+> "Qual o menor número de moedas para formar a soma `x`?"
 
-`solve(x)` -> minimo de moedas para formar `x`;
+Definimos:
 
-se `coins = {1, 3, 4}`;
+`solve(x)` → mínimo de moedas para formar `x`.
 
-`solve(10) = 3`
+Se:
 
-pois 3 + 3 + 4 = 10
+```text
+coins = {1, 3, 4}
+```
 
-a propriedade essencial de `solve` é que seu valor pode ser calculado a partir de seu valores menores.
+Então:
 
-a ideia é focar na primeira moeda que escolhemos para a soma.
+```text
+solve(10) = 3
+```
 
-suponha que seja 1, ou seja, `x - 1 = 9`, o que precisamos agora? escolher moedas que formem uma `soma = 9`. 
+pois:
 
-Podemos pensar em uma formula recursiva que represente isso, por exemplo:
+```text
+3 + 3 + 4 = 10
+```
 
-`solve(x) = min(solve(x - 1) + 1, solve(x - 3) + 1, solve(x - 4) + 1)`
+A propriedade essencial de `solve` é que seu valor pode ser calculado a partir de valores menores.
 
-o caso base da recursão é `solve(0) = 0`
+A ideia é focar na **primeira moeda escolhida** para formar a soma.
 
-então temos o caso geral:
+Suponha que a primeira moeda seja `1`, ou seja:
 
-```c+++
-solve(x) => 
+```text
+x - 1 = 9
+```
+
+O que precisamos agora?
+
+Encontrar o menor número de moedas para formar `9`.
+
+Podemos pensar em uma fórmula recursiva que represente isso:
+
+```text
+solve(x) = min(
+    solve(x - 1) + 1,
+    solve(x - 3) + 1,
+    solve(x - 4) + 1
+)
+```
+
+O caso base da recursão é:
+
+```text
+solve(0) = 0
+```
+
+Então temos o caso geral:
+
+```cpp
+solve(x):
 
 return INF se x < 0
-return 0 se x == 0
-return min(solve(x - c) + 1) se x > 0; onde c é a moeda escolhida.
+return 0   se x == 0
+return min(solve(x - c) + 1) se x > 0
 ```
 
-podemos notar que a variavel c vai iterar sobre todas as possibilidades de escolha de moeda.
+onde `c` é a moeda escolhida.
 
-o fluxo de é o seguinte:
+Podemos notar que a variável `c` irá iterar sobre todas as possibilidades de escolha de moeda.
 
-a primeira chamada recursiva vai iterar ate o menor valor possivel e calcular seus resultados, assim as caso esses valores se repitam nas proximas chamadas eu ja tenho o valor calculado e pronto para ser usado.
+O fluxo é o seguinte:
 
-implementation:
+A primeira chamada recursiva vai até o menor valor possível e calcula seus resultados. Assim, caso esses valores se repitam nas próximas chamadas, eles já estarão calculados e prontos para serem reutilizados.
 
-```c++
-bool ready[N]; // valor de x ja foi visitado?
-int value[N]; // se ja foi visitado retorne value[x];
+### Implementação
+
+```cpp
+bool ready[N]; // valor de x já foi visitado?
+int value[N];  // resposta para x
 
 int solve(int x) {
     if (x < 0) return INF;
@@ -81,7 +118,8 @@ int solve(int x) {
     if (ready[x]) return value[x];
 
     int best = INF;
-    for (int c: coins) {
+
+    for (int c : coins) {
         best = min(best, solve(x - c) + 1);
     }
 
@@ -91,36 +129,47 @@ int solve(int x) {
     return best;
 }
 ```
+
 ***
 
-existem duas formas implementar dp:
+# Formas de implementar DP
 
-1. Top-Down (Memoization) - Olhar de cima para baixo
+Existem duas formas de implementar programação dinâmica.
 
-começo com o valor original e vou quebrando em subproblemas de forma recursiva.
+## 1. Top-Down (Memoization)
 
-2. Bottom-Up (Tabulation) - Olhar de baixo para cima.
+Olhar de cima para baixo.
 
-começamos do menor possivel e vamos construindo as repostas ate o maior.
+Começamos com o problema original e vamos quebrando-o em subproblemas de forma recursiva.
 
-0 -> 1 -> 2 -> 3 -> 4 -> ... -> > N 
+## 2. Bottom-Up (Tabulation)
 
-cada estado usa estados ja calculados anteriomente
+Olhar de baixo para cima.
 
-exemplo:
+Começamos pelo menor estado possível e vamos construindo as respostas até chegar ao estado desejado.
 
-para o coin problem
+```text
+0 → 1 → 2 → 3 → 4 → ... → N
+```
 
-`value[x]` -> menor valor de moedas para formar x;
+Cada estado utiliza apenas estados que já foram calculados anteriormente.
 
-```c++
+### Exemplo
+
+Para o Coin Problem:
+
+```text
+value[x] -> menor número de moedas para formar x
+```
+
+```cpp
 coins = {1, 3, 4};
 value[0] = 0;
 
 for (int x = 1; x <= n; x++) {
     value[x] = INF;
 
-    for (auto c: coins) {
+    for (auto c : coins) {
         if (x - c >= 0) {
             value[x] = min(value[x], value[x - c] + 1);
         }
@@ -128,22 +177,30 @@ for (int x = 1; x <= n; x++) {
 }
 ```
 
-`dp(x) = min(dp(x - c) + 1)`
+Recorrência:
+
+```text
+dp(x) = min(dp(x - c) + 1)
+```
+
 ***
 
-Se o problema perguntar quais moedas foram usadas para construir a solução.
+# Recuperando a solução
 
+Se o problema perguntar **quais moedas foram usadas** para construir a solução, basta guardar a moeda escolhida em cada estado.
 
-```c++
+```cpp
 int n = 10;
+
 coins = {1, 3, 4};
+
 value[0] = 0;
 int ans[N];
 
 for (int x = 1; x <= n; x++) {
     value[x] = INF;
 
-    for (auto c: coins) {
+    for (auto c : coins) {
         if (x - c >= 0 && value[x - c] + 1 < value[x]) {
             value[x] = value[x - c] + 1;
             ans[x] = c;
@@ -154,37 +211,60 @@ for (int x = 1; x <= n; x++) {
 while (n > 0) {
     cout << ans[n] << "\n";
     n -= ans[n];
-}   
+}
 ```
+
 ***
 
-Outra problema classico é procurar a numero de soluções possiveis que formem o valor x
+# Contando o número de soluções
 
-exemplo: x = 5;
-coins = {1, 3, 4};
+Outro problema clássico é procurar o número de soluções possíveis que formem o valor `x`.
 
+Exemplo:
+
+```text
+x = 5
+coins = {1, 3, 4}
+```
+
+Possíveis soluções:
+
+```text
 1 + 1 + 1 + 1 + 1
-3 + 1 + 1 
-4 + 1 
-1 + 4 
-1 + 1 + 3 
+3 + 1 + 1
+4 + 1
+1 + 4
+1 + 1 + 3
 1 + 3 + 1
+```
 
-6 soluções.
+Total:
 
-Para isso modelamos de formar recursiva:
+```text
+6 soluções
+```
 
-`solve(x) = solve(x - Ci) + solve(x - Ci+1) + solve(x - Ci+2) + solve(x - Ci+n)` 
+Para isso modelamos a seguinte recorrência:
 
-ou seja, estamos fazendo um busca completa e usando dp como poda.
+```text
+solve(x) =
+    solve(x - c1) +
+    solve(x - c2) +
+    ...
+    solve(x - ck)
+```
 
+Ou seja, estamos fazendo uma busca completa e usando DP como poda.
 
-```c++
-count[0] = 0;
+## Bottom-Up
 
-// permutações: a ordem importa
+### Permutações (a ordem importa)
+
+```cpp
+count[0] = 1;
+
 for (int x = 1; x <= n; x++) {
-    for (auto c: coins) {
+    for (auto c : coins) {
         if (x - c >= 0) {
             count[x] += count[x - c];
         }
@@ -192,12 +272,12 @@ for (int x = 1; x <= n; x++) {
 }
 ```
 
+### Combinações (a ordem não importa)
 
-```c++
-count[0] = 0;
+```cpp
+count[0] = 1;
 
-// combinação: a ordem não importa
-for (auto c: coins) {
+for (auto c : coins) {
     for (int x = 1; x <= n; x++) {
         if (x - c >= 0) {
             count[x] += count[x - c];
@@ -206,34 +286,49 @@ for (auto c: coins) {
 }
 ```
 
-or recursive:
+## Top-Down
 
-```c++
-ll m = 1e9 + 7;
+```cpp
+const int MOD = 1e9 + 7;
 
 int count[N];
 bool ready[N];
 
-int solve(x) {
-        
+int solve(int x) {
+
     if (x < 0) return 0;
     if (x == 0) return 1;
+
     if (ready[x]) return count[x];
-    
-    int n_ways = 0;
-    for (auto c: coins) {
+
+    int ways = 0;
+
+    for (auto c : coins) {
         if (x - c >= 0) {
-            n_ways += solve(x - c);
-            n_ways %= m;
+            ways += solve(x - c);
+            ways %= MOD;
         }
     }
-   
-    
-    count[x] = n_ways;
+
+    count[x] = ways;
     ready[x] = true;
 
     return count[x];
 }
 ```
-***
 
+*** 
+
+Observe que, para problemas de **minimização**, normalmente usamos:
+
+```text
+dp(x) = min(dp(x - c) + 1)
+```
+
+Já para problemas de **contagem**, usamos:
+
+```text
+dp(x) += dp(x - c)
+```
+
+A diferença está justamente no objetivo do problema: encontrar a melhor solução ou contar todas as soluções possíveis.
