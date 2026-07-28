@@ -170,3 +170,52 @@ int solve(int n) {
     return dp[n];
 }
 ```
+***
+
+```
+Given an a x b rectangle, your task is to cut it into squares. On each move you can select a rectangle and cut it into two rectangles in such a way that all side lengths remain integers. What is the minimum possible number of moves?
+```
+
+approach:
+
+1. Temos um retangulo a * b 
+2. O retangulo pode ser cortado tanto na vertical quanto na horizontal, quando cortado novos retangulos ou quadrados são gerados.
+3. Quando um novo retangulo é gerado temos que descobrir o quantidade de cortes para gerar todos os quadrados, assim definimos o subproblema.
+4. Estado: Definimos o estado `dp[a][b]` => numero minimo de cortes para gerar todos os quadrados no retangulo a * b;
+5. Então podemos iterar sobre todas as possiblidades de cortes e pegar a minima possivel.
+6. Com a possiblidade de cortes horizontais e verticais definimos a recorrencia como:
+
+cortes verticais  => `dp[i][j] = min(dp[i][j], dp[i][j - x] + dp[i][x] + 1)`, onde x é o tamanho do corte.
+
+cortes horizontal  => `dp[i][j] = min(dp[i][j], dp[i - x][j] + dp[x][j] + 1)`, onde x é o tamanho do corte.
+
+```c++
+void solve() {
+    int a, b; cin >> a >> b;
+    
+    int dp[a+1][b+1];
+
+    memset(dp, INF, sizeof dp);
+    
+    for (int i = 1; i <= a; i++) {
+        for (int j = 1; j <= b; j++) {
+            
+            if (i == j) {
+                dp[i][j] = 0;
+                continue;
+            }
+
+            // horizontal
+            for (int k = 1; k <= i - 1; k++) {
+                dp[i][j] = min(dp[i][j], dp[k][j] + dp[i - k][j] + 1);
+            } 
+            //vertical
+            for (int k = 1; k <= j - 1; k++) {
+                dp[i][j] = min(dp[i][j], dp[i][k] + dp[i][j-k] + 1);
+            }
+        }
+    }
+
+    cout << dp[a][b] << '\n';
+}
+```

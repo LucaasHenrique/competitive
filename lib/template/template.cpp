@@ -15,6 +15,8 @@ using namespace std;
 #define s second
 #define pb push_back
 #define MAXN 300100
+constexpr int INF = 0x3f3f3f3f;
+constexpr ll INFLL = 0x3f3f3f3f3f3f3f3fLL;
 
 void solve() {
 
