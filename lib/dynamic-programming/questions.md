@@ -219,3 +219,51 @@ void solve() {
     cout << dp[a][b] << '\n';
 }
 ```
+***
+
+```
+Your task is to count the number of ways numbers 1,2,...,n can be divided into two sets of equal sum.
+```
+1. calculamos a soma de todos os números `S = 1 + 2 + ... + n`; se `S` for ímpar, não é possível dividi-la igualmente entre dois conjuntos, então a resposta é `0`.
+
+2. dividimos a soma por `2`, pois queremos encontrar dois conjuntos cuja soma seja `S / 2`.
+
+3. então nossa resposta será a quantidade de subconjuntos cuja soma é igual a `S / 2`.
+
+4. definimos o estado da DP como:
+
+```cpp
+dp[x] => número de maneiras de formar a soma x.
+```
+
+5. se utilizássemos todos os números `1...n`, cada divisão seria contada duas vezes (um conjunto e seu complemento). Para evitar isso, fixamos o número `n` em um dos conjuntos e fazemos a DP apenas com os números `1...n-1`.
+
+```c++
+const ll MOD = 1e9 + 7;
+
+void solve() {
+    
+    int n; cin >> n;
+
+    ll s = n * (n + 1) / 2;
+    if (s&1) {
+        cout << 0 << '\n';
+        return;
+    }
+
+    ll target = s / 2;
+    
+    ll dp[target+1];
+    memset(dp, 0, sizeof dp);
+    dp[0] = 1;
+
+    for (int i = 1; i < n; i++) {
+        for (int j = target; j >= i; j--) {
+            dp[j] = (dp[j] + dp[j - i]) % MOD;
+        }
+    }
+
+    cout << dp[target]<< "\n";
+}
+```
+
