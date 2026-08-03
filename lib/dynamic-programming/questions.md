@@ -266,4 +266,170 @@ void solve() {
     cout << dp[target]<< "\n";
 }
 ```
+***
 
+Removal Game => 
+
+```
+There is a list of n numbers and two players who move alternately. On each move, a player removes either the first or last number from the list, and their score increases by that number. Both players try to maximize their scores.
+What is the maximum possible score for the first player when both players play optimally?
+```
+
+input => 
+```
+4 
+4 5 1 3
+```
+
+output => `8`
+
+[interval dp, difference dp]
+
+1. Se temos um array `[4, 5, 1, 3]` que elemento devemos pegar primeiro? o maior entre 3 e 4?
+2. Essa abordagem gulosa não necessariamente leva o melhor resultado 
+3. Se voce considerar o intervalo `a[L...R]` vai perceber q temos duas escolhas:
+
+pegar `a[L]`
+pegar `a[R]`
+
+apos sua escolha seu oponente vai jogar de forma otima.
+4. A solução da questão vai ser pensar na vantagem que voce consegue obter encima de seu oponente.
+5. definimos o estado `dp[l][r]` => a maior diferenca de pontos que conseguimos obter (current plauyer - other player) no intervalo `[L, R]`
+6. Caso base: se resta apenas um numero, pegamos ele, então `dp[i][i] = a[i]`
+7. `dp[l][r]` não guarda a resposta final apenas a diferenca entre os jogadores, para obter a resposta final fazemos:
+
+sabemos q cada numero é escolhido apenas uma vez logo:
+
+first + second = total_sum
+
+a difenca entre os jogadores é:
+
+first - second = x;
+
+ou seja, duas equações:
+
+total = 19
+x = 5;
+
+first + second = 19
+first - second = 5 
+
+2 * first = 24 
+first = 12
+
+```c++
+int main() {
+    int n;
+    cin >> n;
+
+    vector<ll> a(n);
+
+    ll total = 0;
+
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        total += a[i];
+    }
+
+    vector<vector<ll>> dp(n, vector<ll>(n));
+
+    // Base case
+    for (int i = 0; i < n; i++)
+        dp[i][i] = a[i];
+
+    // Interval length
+    for (int len = 2; len <= n; len++) {
+
+        for (int l = 0; l + len - 1 < n; l++) {
+
+            int r = l + len - 1;
+
+            dp[l][r] = max(
+                a[l] - dp[l + 1][r],
+                a[r] - dp[l][r - 1]
+            );
+        }
+    }
+
+    ll answer = (total + dp[0][n - 1]) / 2;
+
+    cout << answer << '\n';
+}
+```
+Elevator Rides =>
+
+dp bitmask problem
+
+```
+There are n people who want to get to the top of a building which has only one elevator. You know the weight of each person and the maximum allowed weight in the elevator. What is the minimum number of elevator rides?
+```
+
+input and output => 
+```
+4 10
+4 8 6 1 
+
+2
+```
+
+approach:
+
+1. Podemos usar uma mascara de bits (1011) para representar cada viagem 
+
+cada bit ligado significa que a pessoa na posição foi levado na viagem
+
+2. Com isso iteramos sobre todos os subconjuntos possiveis, cada subconjunto representa uma forma de viagem 
+
+geramos os subconjuntos com 2^N 
+
+3. Definimos o estado da `dp[mask] = {numero de viagens, ultimo peso total da ultima viagem}`
+4. Para cada pessoa de 1 a N verificamos:
+
+verificamos se a pessoa ja esta na viagem:
+    se não:
+        verificamos se o peso da viagem + o peso da pessoa <= a capacidade do elevador: 
+            se sim: 
+                colocamos a pessoa nessa viagem e somamos o peso total
+            se não: 
+                uma nova viagem deve ser feita
+
+5. Criamos uma nova mask incluindo a nova pessoa 
+6. O resultado final é:
+    `dp[new_mask] = min(dp[new_mask], mask_atual)`
+
+
+```c++
+void solve() {
+    
+    int n; cin >> n;
+    ll x; cin >> x;
+
+    vector<ll> w(n);
+    forn (i, n) cin >> w[i];
+
+    int tot_mask = 1 << n;
+    vector<pair<int, ll>> dp(tot_mask, {n+1, 0});
+    dp[0] = {1, 0};
+
+    for (int mask = 0; mask < tot_mask; mask++) {
+        
+        for (int p = 0; p < n; p++) {
+            if ((mask & (1 << p)) == 0) {
+                auto atual = dp[mask];
+
+                if (atual.s + w[p] <= x) {
+                    atual.s += w[p];
+                } else {
+                    atual.f++;
+                    atual.s = w[p];
+                }
+
+                auto new_mask = mask | (1 << p);
+                dp[new_mask] = min(dp[new_mask], atual);
+            }
+        }
+    }
+
+    cout << dp[tot_mask - 1].f << "\n";
+}
+```
