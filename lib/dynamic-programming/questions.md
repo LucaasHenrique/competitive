@@ -433,3 +433,120 @@ void solve() {
     cout << dp[tot_mask - 1].f << "\n";
 }
 ```
+***
+
+LCS 
+
+```
+You are given strings s and t. Find one longest string that is a subsequence of both s and t.
+```
+
+1. queremos maior string que:   
+    - aparece em S matendo a ordem
+    - aparece em T mantendo a ordem
+2. Estado:
+    `dp[i][j] => longest commom subsequence usndo os i primeiros elementos de S e os j primeiros elementos de T`
+3. Temos dois casos:
+    - 1: iguais
+        `s[i-1] == t[j-1]`
+        adicionamos esse caracter na nossa lcs 
+        `dp[i][j] = dp[i-1][j-1] + 1`
+    - 2: diferentes
+        `s[i-1] != t[j-1]`
+        escolhemos um e ignoramos outro:
+        `dp[i][j] = max(dp[i-1][j], dp[i][j-1])`
+
+```c++
+void solve() {
+    string s, t; cin >> s >> t;
+        
+    int n = s.size();
+    int m = t.size();
+
+    int dp[n+1][m+1];
+    memset(dp, 0, sizeof dp);
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1;  j <= m; j++) {
+            if (s[i-1] == t[j-1]) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+
+    string ans;
+
+    int i = n;
+    int j = m;
+
+    while (i > 0 && j > 0) {
+        if (s[i-1] == t[j-1]) {
+            ans += s[i-1];
+            i--;
+            j--;
+        } else if (dp[i-1][j] >= dp[i][j-1]) {
+            i--;
+        } else {
+            j--;
+        }
+    }
+
+    reverse(all(ans));
+
+    cout << ans << "\n";
+}
+```
+***
+
+consecutive subsequence
+
+```
+You are given an integer array of length n. You have to choose some subsequence of this array of maximum length such that this subsequence forms a increasing sequence of consecutive integers. In other words the required sequence should be equal to [x,x+1,…,x+k−1] for some value x and length k.
+```
+
+1. Para cada elemento x podemos escolher:
+    - continuar uma subsequencia que terminou em x - 1;
+    - começar uma nova subseqeuncia em x;
+
+```c++
+
+void solve() {
+    
+    int n; cin >> n;
+    vector<ll> a(n);
+    
+    forn (i, n) cin >> a[i];
+    
+    map<int, int> dp; // longest subseqe ends on value x;
+    
+    int ans = 0, last = 0;
+    for (int i = 0; i < n; i++) {
+        int x = a[i];
+        dp[x] = dp[x-1] + 1;
+
+        if (ans < dp[x]) {
+            ans = dp[x];
+            last = x;
+        }
+    }
+
+    vector<int> answer;
+    for (int i = n - 1; i >= 0; i--) {
+        if (a[i] == last) {
+            answer.pb(i);
+            last--;
+        }
+    }   
+
+    reverse(all(answer));
+    
+    cout << answer.size() << "\n";
+    for (auto x: answer) cout << x + 1 << " ";
+
+    cout << "\n";
+}
+
+```
+

@@ -20,7 +20,7 @@ void solve() {
     
     ll n; cin >> n;
 
-    int i = 1;
+    ll i = 1;
     ll powc = 5, sum = 0; 
     while (powc <= n) {
         sum += n / pow(5, i);

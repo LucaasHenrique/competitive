@@ -29,21 +29,20 @@ void solve() {
     
     if (!zero) cout << 0 << "\n"; 
     else {
-    int l = 0, r = 0;
-    for (int i = 0; i < n; i++) {
-        if (a[i] != 0) {l = i; break;}
-    }
+        int l = 0, r = 0;
+        for (int i = 0; i < n; i++) {
+            if (a[i] != 0) {l = i; break;}
+        }
 
-    for (int i = n-1; i > 0; i--) {
-        if (a[i] != 0) {r = i; break;}
-    }
-    
-    //cout << l << " " << r;
-    for (int i = l; i <= r; i++) {
-        if (a[i] == 0) {cout << 2 << "\n"; return;}
-    }
+        for (int i = n-1; i > 0; i--) {
+            if (a[i] != 0) {r = i; break;}
+        }
+        //cout << l << " " << r;
+        for (int i = l; i <= r; i++) {
+            if (a[i] == 0) {cout << 2 << "\n"; return;}
+        }
 
-    cout << 1 << "\n";
+        cout << 1 << "\n";
     }
 }
 

@@ -349,3 +349,96 @@ Memória:
 O(1)
 ```
 
+question:
+
+```
+The organizers of the children's holiday are planning to inflate m balloons for it. They invited nassistants, the i-th assistant inflates a balloon in ti minutes, but every time after zi balloons are inflated he gets tired and rests for yi minutes. Now the organizers of the holiday want to know after what time all the balloons will be inflated with the most optimal work of the assistants, and how many balloons each of them will inflate. (If the assistant has inflated the balloon and needs to rest, but he will not have to inflate more balloons, then it is considered that he finished the work immediately after the end of the last balloon inflation, and not after the rest).
+
+In the first line print the number T, the time it takes for all the balloons to be inflated. On the second line print n numbers, the number of balloons inflated by each of the invited assistants. If there are several optimal answers, output any of them.
+```
+
+1. Podemos pensar no ciclo de trabalho para cada assitente;
+2. Um ciclo seria a antes de descançar ele pode fazer z balões levando t minutos para cada balão e descançndo y segundos depois da fazer z balões;
+    temos a formula fechada: 
+        tempo de ciclo tc = t * z + y;
+        balões por ciclo bc =  z
+3. Com isso sabemos o numero de ciclos completos com:
+    numero de ciclos completos c = T / tc, onde t é uma quantidade de tempo chuta na busca binaria
+4. Também sabemos o tempo restante com:
+    trem = T MOD tc
+5. O numero de balões feito por cada assitente é dado por:
+    n_t = c * z + min(trem / t);
+6. questão da saida do problema:
+    - não podemos imprimir o que cada assitente consegue fazer, pois pode ocorrer dessa quantidade ser maior q m;
+    - podemos fazer uma distribuição gulosa para achar um quantidade para cada assistente de forma que não supere m;
+
+    temos que: 
+        seja rem_m = a quantidade m de baloes que ainda devem ser feitos;
+        veja quantos balões ci o assistente pode fazer no tempo t (resposta final);
+        pegue o min sem passar da capacidade rem_m => `min(rem_m, ci)`
+        imprima a quantidade adequadda do assistenten atual;
+
+```c++
+int n;
+vector<ll> t_p, t_t, r_t;
+// t z y
+bool valid(ll t, int m) {
+    // ciclo para cada assitente seria
+    // tempo de ciclo = t * z * y;
+    // balões por ciclo = z;
+    // numero de ciclo completo = T / tempo de ciclo
+    // tempo restante = T MOD tempo de ciclo
+    // numero de balões = numero de ciclo completos * z + min(z, rem / t); 
+    ll tot = 0;
+    for (int i = 0; i < n; i++) {
+        ll cycle = t_p[i] * t_t[i] + r_t[i];
+        ll n_cycles = t / cycle;
+        ll trem = t % cycle;
+        tot += n_cycles * t_t[i] + min(t_t[i], trem / t_p[i]);
+    }
+
+    return tot >= m;
+}
+
+ll count_b(ll t, int m, int i) {
+    ll cycle = t_p[i] * t_t[i] + r_t[i];
+    ll n_cycles = t / cycle;
+    ll trem = t % cycle;
+    return n_cycles * t_t[i] + min(t_t[i], trem / t_p[i]);
+}
+
+void solve() {
+    int m; cin >> m >> n;
+
+    t_p.resize(n); t_t.resize(n); r_t.resize(n);
+    forn (i, n) {
+        cin >> t_p[i] >> t_t[i] >> r_t[i];
+    }
+
+    ll l = 0, r = 1e9;
+    ll ans = r;
+    while (l <= r) {
+        ll mid = l + (r - l) / 2;
+    
+        if (valid(mid, m)) {
+            ans = mid;
+            r = mid - 1;
+        } else {
+            l = mid + 1;
+        }
+    }
+
+    cout << ans << "\n";
+    ll rem_m = m;
+
+    for (int i = 0; i < n; i++) {
+        ll ci = count_b(ans, rem_m, i);
+        ll take = min(rem_m, ci);
+
+        cout << take << (i + 1 == n ? "" : " ");
+        rem_m -= take;
+    }
+
+    cout << "\n";
+}
+```
