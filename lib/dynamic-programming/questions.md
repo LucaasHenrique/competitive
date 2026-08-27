@@ -550,3 +550,158 @@ void solve() {
 
 ```
 
+``` 
+Vladik often travels by trains. He remembered some of his trips especially well and I would like to tell you about one of these trips:
+
+Vladik is at initial train station, and now n people (including Vladik) want to get on the train. They are already lined up in some order, and for each of them the city code ai is known (the code of the city in which they are going to).
+
+Train chief selects some number of disjoint segments of the original sequence of people (covering entire sequence by segments is not necessary). People who are in the same segment will be in the same train carriage. The segments are selected in such way that if at least one person travels to the city x, then all people who are going to city x should be in the same railway carriage. This means that they can’t belong to different segments. Note, that all people who travel to the city x, either go to it and in the same railway carriage, or do not go anywhere at all.
+
+Comfort of a train trip with people on segment from position l to position r is equal to XOR of all distinct codes of cities for people on the segment from position l to position r. XOR operation also known as exclusive OR.
+
+Total comfort of a train trip is equal to sum of comfort for each segment.
+
+Help Vladik to know maximal possible total comfort.
+```
+
+1. um vagão só é valido se todo mundo que vai para a cidade x estão nele.
+    `a = [1, 3, 2, 5, 2, 7]` => `[2, 5, 2]` é valido.
+2. para toda cidade x podemos armazenar:
+    `first[x]` => primeira ocorrencia dessa cidade no array.
+    `last[x]` => ultim ocorrencia dessa cidade no array 
+
+    e temos que para um vagão ser valido:
+
+    `L <= first[x] and last[x] <= R`, ou seja todo mundo que vai para cidade x tem q estar contido no intervalo `[l, r]`;
+3. definimos a dp como:
+    `dp[i]` => maior conforto usando as i primeiras pessoas.
+4. testaremos todos os intervalos, em cada teste guardamos a menor o ocorrencia da cidade e a maior ocorrencia da cidade x em termo de posição.
+5. Para cada cidade q ainda não apareceu fazemos o curr ^= x;
+6. Para cada estado temos duas possibilidades: 
+    1. A pessoa nao entra em nenhum vagão => `dp[r] = dp[r-1]`
+
+    2. Existe um vagão terminando em i, ou seja, um vagão valido no intervalo `[l, r]` => `dp[r] = max(dp[r], dp[l-1] + curr)`;
+
+```c++
+void solve() {
+    int n; cin >> n;
+ 
+    vector<int> a(n+1);
+    const int m = 5000;
+    
+    vector<int> first(m+1, n+1);
+    vector<int> last(m+1);
+ 
+    for (int i = 1; i<= n; i++) {
+        cin >> a[i];
+ 
+        first[a[i]] = min(first[a[i]], i);
+        last[a[i]] = i;
+    }
+ 
+    int dp[n+1];
+    memset(dp, 0, sizeof dp);
+ 
+    for (int r = 1; r <= n; r++) {
+        dp[r] = dp[r-1];
+        vector<bool> used(m+1, 0);
+ 
+        int mfirst = n + 1, mlast = 0, cur = 0;
+ 
+        for (int l = r; l >= 1; l--) {
+            
+            int x = a[l];
+ 
+            if (!used[x])  {
+                used[x] = 1;
+                cur ^= x;
+ 
+                mfirst = min(mfirst, first[x]);
+                mlast = max(mlast, last[x]);
+            }
+ 
+            if (mfirst >= l && mlast <= r) {
+                dp[r] = max(dp[r], dp[l-1] + cur);
+            }
+        }
+    }
+ 
+    cout << dp[n] << "\n";
+}
+```
+
+caesar legions:
+
+```
+Gaius Julius Caesar, a famous general, loved to line up his soldiers. Overall the army had n1 footmen and n2 horsemen. Caesar thought that an arrangement is not beautiful if somewhere in the line there are strictly more that k1 footmen standing successively one after another, or there are strictly more than k2 horsemen standing successively one after another. Find the number of beautiful arrangements of the soldiers.
+
+Note that all n1 + n2 warriors should be present at each arrangement. All footmen are considered indistinguishable among themselves. Similarly, all horsemen are considered indistinguishable among themselves.
+```
+
+1. considere que temos a string `FFHHF` o que precisamos saber para adiconar a proxima letra?
+    1. quem foi o ultimo tipo letra adicionada, qual sequencia consecutiva que essa letra apareceu, o quanto ainda resta dessa letra para ser adicionada.
+2. Definimos nossa dp como, `dp[f][h][t][c]` => quantidade de sequencias validas usando F footmen, H horseman, sabendo que o ultimo char foi do tipo T (H, F) e existe uma sequencia consequitiva de tamanho C do tipo T;
+3. Temos as possibilidades:
+    Ultimo igual F:
+        1. adicione F se C < K1 e F < N1;
+        2. adicione H se H < N2;
+    Ultimo igual H:
+        1. adicione H se C < K2 e H < N2;
+        2. adicione F se F < N1;
+
+```c++
+const int MOD = 1e8;
+int dp[101][101][2][11];
+ 
+void solve() {
+    int n1, n2, k1, k2; cin >> n1 >> n2 >> k1 >> k2;
+    
+    dp[1][0][0][1] = 1;
+    dp[0][1][1][1] = 1;
+ 
+    for (int f = 0; f <= n1; f++) {
+        for (int h = 0; h <= n2; h++) {
+            for (int c = 1; c <= 10; c++) {
+                
+                if (dp[f][h][0][c] != 0) {
+                    
+                    if (f < n1 && c < k1) {
+                        dp[f+1][h][0][c + 1] += dp[f][h][0][c];
+                        dp[f+1][h][0][c+1] %= MOD;
+                    }  
+ 
+                    if (h < n2) {
+                        dp[f][h+1][1][1] += dp[f][h][0][c];
+                        dp[f][h+1][1][1] %= MOD;
+                    }
+                }
+ 
+                if (dp[f][h][1][c] != 0) {
+                    if (h < n2 && c < k2) {
+                        dp[f][h+1][1][c+1] += dp[f][h][1][c];
+                        dp[f][h+1][1][c+1] %= MOD;
+                    }
+ 
+                    if (f < n1) {
+                        dp[f+1][h][0][1] += dp[f][h][1][c];
+                        dp[f+1][h][0][1] %= MOD;
+                    }
+                }
+            }
+        } 
+    }
+    
+    int ans = 0;
+    for (int c = 1; c <= k1; c++) {
+        ans += dp[n1][n2][0][c];
+        ans %= MOD;
+    }
+    
+    for (int c = 1; c <= k2; c++) {
+        ans += dp[n1][n2][1][c];
+        ans %= MOD;
+    }
+ 
+    cout << ans << "\n";
+}
+```
