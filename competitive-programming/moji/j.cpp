@@ -65,7 +65,7 @@ void solve() {
             ans = m;
             r = m - 1;
         } else if (res == "QUENTE") {
-            l = m + 1;
+                l = m + 1;
         }
     }
 
