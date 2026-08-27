@@ -30,9 +30,6 @@ The repository is divided into the following main folders:
     - **CP Judges:** `Codeforces`, `Beecrowd/URI`, `CSES`, `AtCoder`, `Kattis`, `USACO`
     - **Competitions:** `OBI` (Brazilian Olympiad in Informatics), `SBC Marathon`, `Gaúcha Marathon`, university lists (`USP`, `UFMG`), etc.
 
-- 🏗️ **[`ds-c/`](./ds-c/)**
-  - Didactic and detailed implementations of Classic Data Structures written purely in **C** (*Heaps, Lists, Stacks*).
-
 ---
 
 ## 🏆 Platforms
